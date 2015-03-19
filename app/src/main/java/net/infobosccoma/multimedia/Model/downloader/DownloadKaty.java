@@ -49,9 +49,16 @@ public class DownloadKaty {
         while ((inputLine = in.readLine()) != null) {
              matcher = pattern.matcher(inputLine);
 
-            matcher.toString();
+            while (matcher.find()) {
+                // Get the matching string
+                urls.add(matcher.group());
+            }
         }
 
         in.close();
+
+
+        //Picasso.with(getApplicationContext()).load(urls.get(0)).into(imageView);
+
     }
 }
