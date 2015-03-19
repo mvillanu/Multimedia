@@ -1,9 +1,12 @@
 package net.infobosccoma.multimedia;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
@@ -16,6 +19,9 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import net.infobosccoma.multimedia.Model.User;
+
+import java.io.File;
 import java.io.IOException;
 
 
@@ -63,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getFile(getBaseContext())) );
                 startActivityForResult(cameraIntent,CAMERA_CODE);
             }
         });
@@ -128,6 +135,42 @@ public class MainActivity extends ActionBarActivity {
     private void pause(){
         position=player.getCurrentPosition();
         player.pause();
+    }
+
+
+
+    //create a temporary file in sd card path.
+
+    private File getFile(Context context){
+        final File path = new File( Environment.getExternalStorageDirectory(), context.getPackageName() );
+        if(!path.exists()){
+            path.mkdir();
+        }
+        return new File(path, "selfie.tmp");
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==CAMERA_CODE)
+        {
+            Bitmap captureBmp = null;
+            User user = null;
+            try {
+                captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
+                user = new User(textName.getText().toString(),textSurname.getText().toString(), captureBmp);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Intent intent = new Intent();
+            intent.putExtra("user",user);
+            startActivity(intent);
+        }
     }
 
 
