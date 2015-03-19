@@ -36,9 +36,9 @@ public class DownloadKaty {
 
     public void parseContent(InputStream content) throws IOException {
 
-        ArrayList<String> urls = new ArrayList<String>();
+        /*ArrayList<String> urls = new ArrayList<String>();
 
-        BufferedReader in = new BufferedReader(content);
+        //BufferedReader in = new BufferedReader(content);
         String inputLine;
 
 
@@ -47,11 +47,10 @@ public class DownloadKaty {
         Matcher matcher;
 
         while ((inputLine = in.readLine()) != null) {
-             matcher = pattern.matcher(inputLine);
-
+            matcher = pattern.matcher(inputLine);
             matcher.toString();
         }
 
-        in.close();
+        in.close();*/
     }
 }

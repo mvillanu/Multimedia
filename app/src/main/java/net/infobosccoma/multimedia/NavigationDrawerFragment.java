@@ -110,8 +110,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setAdapter(new ArrayAdapter<User>(
                 getActionBar().getThemedContext(),
                 R.layout.userinfo_layout,
-                android.R.id.text1,
-
+                android.R.id.text1
                 ));
 
 
