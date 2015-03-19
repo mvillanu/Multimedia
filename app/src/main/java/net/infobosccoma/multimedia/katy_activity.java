@@ -21,6 +21,8 @@ import net.infobosccoma.multimedia.Model.User;
 public class katy_activity extends ActionBarActivity
 
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    private static final String WEB_URL="https://www.youtube.com/watch?v=CevxZvSJLk8";
     private User userInfo;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -52,15 +54,20 @@ public class katy_activity extends ActionBarActivity
 
 
         initComponents();
+        browser.loadUrl(WEB_URL);
         //mNavigationDrawerFragment.setArguments();
 
     }
 
     private void initComponents() {
         browser = (WebView) findViewById(R.id.webView);
+
         listSections = (ListView) findViewById(R.id.listViewSections);
+        listSections.set
 
     }
+
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {

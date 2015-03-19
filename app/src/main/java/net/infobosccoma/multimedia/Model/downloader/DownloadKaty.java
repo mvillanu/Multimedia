@@ -36,9 +36,9 @@ public class DownloadKaty {
 
     public void parseContent(InputStream content) throws IOException {
 
-        /*ArrayList<String> urls = new ArrayList<String>();
+        ArrayList<String> urls = new ArrayList<String>();
 
-        //BufferedReader in = new BufferedReader(content);
+        BufferedReader in = new BufferedReader(content);
         String inputLine;
 
 
@@ -47,10 +47,18 @@ public class DownloadKaty {
         Matcher matcher;
 
         while ((inputLine = in.readLine()) != null) {
-            matcher = pattern.matcher(inputLine);
-            matcher.toString();
+             matcher = pattern.matcher(inputLine);
+
+            while (matcher.find()) {
+                // Get the matching string
+                urls.add(matcher.group());
+            }
         }
 
-        in.close();*/
+        in.close();
+
+
+        //Picasso.with(getApplicationContext()).load(urls.get(0)).into(imageView);
+
     }
 }

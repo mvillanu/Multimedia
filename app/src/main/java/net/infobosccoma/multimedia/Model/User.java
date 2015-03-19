@@ -13,6 +13,12 @@ public class User implements Serializable{
     private String surName;
     private Bitmap image;
 
+    public User(String name, String surName, Bitmap image){
+        this.name=name;
+        this.surName=surName;
+        this.image=image;
+    }
+
     public String getName() {
         return name;
     }
