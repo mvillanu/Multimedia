@@ -167,7 +167,7 @@ public class MainActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
 
-            Intent intent = new Intent();
+            Intent intent = new Intent(getApplicationContext(),katy_activity.class);
             intent.putExtra("user",user);
             startActivity(intent);
         }
