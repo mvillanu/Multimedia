@@ -1,6 +1,7 @@
 package net.infobosccoma.multimedia.Model;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 
 import java.io.Serializable;
 
@@ -11,12 +12,10 @@ public class User implements Serializable{
 
     private String name;
     private String surName;
-    private Bitmap image;
 
-    public User(String name, String surName, Bitmap image){
+    public User(String name, String surName){
         this.name=name;
         this.surName=surName;
-        this.image=image;
     }
 
     public String getName() {
@@ -35,11 +34,11 @@ public class User implements Serializable{
         this.surName = surName;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public Bundle makeBundle(String key){
+        Bundle b = new Bundle();
+        b.putSerializable(key,this);
+        return b;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
+
 }

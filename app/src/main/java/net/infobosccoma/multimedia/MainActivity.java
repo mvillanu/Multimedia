@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
     private MediaPlayer player;
     private Button btnAccept;
     private int position;
-    private Bitmap bitmap;
+    static Bitmap captureBmp;
     private EditText textName;
     private EditText textSurname;
     private static final int CAMERA_CODE=100;
@@ -146,7 +146,7 @@ public class MainActivity extends ActionBarActivity {
         if(!path.exists()){
             path.mkdir();
         }
-        return new File(path, "selfie.tmp");
+        return new File(path, "selfie.png");
     }
 
 
@@ -157,11 +157,10 @@ public class MainActivity extends ActionBarActivity {
         // check if the request code is same as what is passed  here it is 2
         if(requestCode==CAMERA_CODE)
         {
-            Bitmap captureBmp = null;
             User user = null;
             try {
                 captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
-                user = new User(textName.getText().toString(),textSurname.getText().toString(), captureBmp);
+                user = new User(textName.getText().toString(),textSurname.getText().toString());
 
             } catch (IOException e) {
                 e.printStackTrace();
