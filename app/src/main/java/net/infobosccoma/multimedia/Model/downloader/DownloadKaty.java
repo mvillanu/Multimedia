@@ -38,8 +38,8 @@ public class DownloadKaty {
 
         ArrayList<String> urls = new ArrayList<String>();
 
-        BufferedReader in = new BufferedReader(content);
-        String inputLine;
+        //BufferedReader in = new BufferedReader(content);
+       /* String inputLine;
 
 
         String patternString = "<img alt=\"Katy Perry\" src=\"(.*?)\"";
@@ -55,7 +55,7 @@ public class DownloadKaty {
             }
         }
 
-        in.close();
+        in.close();*/
 
 
         //Picasso.with(getApplicationContext()).load(urls.get(0)).into(imageView);

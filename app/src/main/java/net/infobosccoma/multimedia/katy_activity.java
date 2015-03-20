@@ -63,7 +63,7 @@ public class katy_activity extends ActionBarActivity
         browser = (WebView) findViewById(R.id.webView);
 
         listSections = (ListView) findViewById(R.id.listViewSections);
-        listSections.set
+        //listSections.set
 
     }
 

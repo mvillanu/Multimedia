@@ -12,11 +12,11 @@ import net.infobosccoma.multimedia.R;
 /**
  * Created by Maxi on 19/03/2015.
  */
-public class ListViewAdapter extends ArrayAdapter<Category> {
-    private String[] dades;
+public class ListViewAdapter /*extends ArrayAdapter<Category>*/ {
+    /*private String[] dades;
 
     ListViewAdapter(Activity context, String[] dades) {
-        super(context, R.layout.list_view_layout,dades);
+        super(context, R.layout.sections_layout,dades);
         this.dades = dades;
     }
 
@@ -33,6 +33,6 @@ public class ListViewAdapter extends ArrayAdapter<Category> {
         //url.setText(dades[position]);
 
         return element;
-    }
+    }*/
 
 }
