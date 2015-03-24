@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".katy_activity"
-            android:label="@string/title_activity_katy_activity" >
+            android:name=".DrawerMenuActivity"
+            android:label="@string/title_activity_drawer_menu" >
         </activity>
     </application>
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,10 +32,11 @@ public class MainActivity extends ActionBarActivity {
     private MediaPlayer player;
     private Button btnAccept;
     private int position;
-    static Bitmap captureBmp;
+    public static Bitmap captureBmp;
     private EditText textName;
     private EditText textSurname;
     private static final int CAMERA_CODE=100;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,18 +159,25 @@ public class MainActivity extends ActionBarActivity {
         // check if the request code is same as what is passed  here it is 2
         if(requestCode==CAMERA_CODE)
         {
-            User user = null;
+            user = null;
             try {
                 captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
                 user = new User(textName.getText().toString(),textSurname.getText().toString());
+                Log.i("user:",user.getName());
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Intent intent = new Intent(getApplicationContext(),katy_activity.class);
-            intent.putExtra("user",user);
-            startActivity(intent);
+            //Intent intent = new Intent(getApplicationContext(),katy_activity.class);
+            //intent.putExtra("user",user);
+            //startActivity(intent);
+
+            Intent i = new Intent(getApplicationContext(),DrawerMenuActivity.class);
+            Bundle b = user.makeBundle("user");
+
+            i.putExtra("user",b);
+            startActivity(i);
         }
     }
 
