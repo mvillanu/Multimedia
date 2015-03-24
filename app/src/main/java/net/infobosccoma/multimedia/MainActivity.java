@@ -162,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
             user = null;
             try {
                 captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
-                user = new User(textName.getText().toString(),textSurname.getText().toString());
+                user = new User(textName.getText().toString(),textSurname.getText().toString()/*,captureBmp*/);
                 Log.i("user:",user.getName());
 
             } catch (IOException e) {
@@ -174,9 +174,9 @@ public class MainActivity extends ActionBarActivity {
             //startActivity(intent);
 
             Intent i = new Intent(getApplicationContext(),DrawerMenuActivity.class);
-            Bundle b = user.makeBundle("user");
-
-            i.putExtra("user",b);
+            //Bundle b = user.makeBundle("user");
+            i.putExtra("user",user);
+            //i.putExtra("user",b);
             startActivity(i);
         }
     }
