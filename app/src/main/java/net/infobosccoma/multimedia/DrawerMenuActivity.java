@@ -62,8 +62,11 @@ public class DrawerMenuActivity extends ActionBarActivity
         Log.i("User info", info.getName());
 
 
-        EditText nomEditText;
-        EditText cognomEditText;
+        EditText nomEditText = (EditText) findViewById(R.id.editText_NomUser);
+        EditText cognomEditText = (EditText) findViewById(R.id.editText2_CognomUser);
+
+        nomEditText.setText(info.getName());
+        cognomEditText.setText(info.getSurName());
 
 
         //mNavigationDrawerFragment.setArguments(savedInstanceState);
