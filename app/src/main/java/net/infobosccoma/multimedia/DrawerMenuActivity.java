@@ -61,6 +61,11 @@ public class DrawerMenuActivity extends ActionBarActivity
         User info = (User) this.getIntent().getSerializableExtra("user");//bnd.getSerializable("user");
         Log.i("User info", info.getName());
 
+
+        EditText nomEditText;
+        EditText cognomEditText;
+
+
         //mNavigationDrawerFragment.setArguments(savedInstanceState);
 
     }
@@ -183,17 +188,5 @@ public class DrawerMenuActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-    public class Vista{
-
-        public EditText nomEditText;
-        public EditText cognomEditText;
-
-
-
-    }
-
-
-
 
 }
