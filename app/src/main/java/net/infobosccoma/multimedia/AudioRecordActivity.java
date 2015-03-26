@@ -9,7 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 
@@ -143,7 +145,21 @@ public class AudioRecordActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio_record);
+
+        LinearLayout ll = new LinearLayout(this);
+        mRecordButton = new RecordButton(this);
+        ll.addView(mRecordButton,
+                new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        0));
+        mPlayButton = new PlayButton(this);
+        ll.addView(mPlayButton,
+                new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        0));
+        setContentView(ll);
     }
 
 
@@ -160,5 +176,19 @@ public class AudioRecordActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mRecorder != null) {
+            mRecorder.release();
+            mRecorder = null;
+        }
+
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
     }
 }
