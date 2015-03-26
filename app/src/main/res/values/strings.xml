@@ -19,5 +19,8 @@
     <string name="title_activity_drawer_menu">DrawerMenuActivity</string>
     <string name="title_activity_image_gallery">image_gallery</string>
     <string name="loading">loading...</string>
+    <string name="title_activity_video">VideoActivity</string>
+    <string name="title_activity_video_activity">video_activity</string>
+    <string name="title_activity_audio_record">AudioRecordActivity</string>
 
 </resources>

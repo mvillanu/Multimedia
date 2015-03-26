@@ -16,9 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import net.infobosccoma.multimedia.Model.User;
 
@@ -83,33 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    private void createVideo(VideoView video, String path){
-        MediaController controller = new MediaController(this);
-        video.setMediaController(controller);
-        video.setVideoPath(path);
-        video.start();
-        video.requestFocus();
 
-
-    }
-
-
-    private void ResumeMedia(VideoView video, int pos){
-        if(!video.isPlaying()){
-            video.seekTo(pos);
-            video.start();
-        }
-
-    }
-
-
-    private void PauseMedia(VideoView video){
-        if(video.isPlaying()){
-            //pos = video.getCurrentPosition();
-            video.pause();
-        }
-
-    }
 
 
 
@@ -156,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        // check if the request code is same as what is passed  here it is 2
+
         if(requestCode==CAMERA_CODE)
         {
             user = null;
