@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -36,7 +37,8 @@ public class DrawerMenuActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-
+    private static Images images;
+    private WebView webview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,22 @@ public class DrawerMenuActivity extends ActionBarActivity
         nomEditText.setText(info.getName());
         cognomEditText.setText(info.getSurName());
 
+        images = new Images();
+        images.download();
+        /*
+        webview = (WebView) findViewById(R.id.webView);
+        //webview.getSettings().setJavaScriptEnabled(true);
+        //webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webview.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
+
+        webview.loadUrl("http://www.katyperry.com/");
+        */
 
         //mNavigationDrawerFragment.setArguments(savedInstanceState);
 
@@ -156,9 +174,8 @@ public class DrawerMenuActivity extends ActionBarActivity
             View rootView = inflater.inflate(R.layout.fragment_drawer_menu, container, false);
 
             dades = new Category[3];
-            dades[0] = new Category("Imatges",0);
-            dades[1] = new Category("Videos",1);
-            dades[2] = new Category("Concerts",2);
+            dades[0] = new Category("Imatges",R.drawable.flower);
+            dades[1] = new Category("Videos",R.drawable.video_image_section);
 
             final Activity activity = getActivity();
             ListView categoryList = (ListView) rootView.findViewById(R.id.listViewSections);
@@ -170,11 +187,13 @@ public class DrawerMenuActivity extends ActionBarActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    Intent homo = new Intent(parent.getContext(),image_gallery.class);
 
-                    startActivity(homo);
+                    Intent imageIntent = new Intent(parent.getContext(),image_gallery.class);
+                    imageIntent.putStringArrayListExtra("images",images.getList());
+                    startActivity(imageIntent);
+                    //Intent homo = new Intent(parent.getContext(),image_gallery.class);
 
-
+                    //startActivity(homo);
                     Toast.makeText(getActivity(),"Aixo es una secció",Toast.LENGTH_LONG);
                 }
             });

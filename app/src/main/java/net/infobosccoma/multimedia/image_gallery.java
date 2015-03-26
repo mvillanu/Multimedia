@@ -1,10 +1,10 @@
 package net.infobosccoma.multimedia;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +15,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import net.infobosccoma.multimedia.Adapter.GridAdapter;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class image_gallery extends ActionBarActivity {
@@ -27,30 +25,21 @@ public class image_gallery extends ActionBarActivity {
     private ProgressDialog myProgressDialog;
     private GridView gridview;
     private ArrayList<String> images;
-    private ArrayList<String> urls;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_gallery);
 
-        images = new ArrayList<String>();
 
-        urls = new ArrayList<String>();
-        urls.add("http://www.katyperry.com/image-galleries/roar-video-shoot/");
-        urls.add("http://www.katyperry.com/image-galleries/california-gurls/");
-        urls.add("http://www.katyperry.com/image-galleries/firework/");
-        urls.add("http://www.katyperry.com/image-galleries/one-boys/");
-        urls.add("http://www.katyperry.com/image-galleries/waking-vegas/");
-        urls.add("http://www.katyperry.com/image-galleries/mtv-unplugged/");
-
-        images = new ArrayList<String>();
         gridview = (GridView) findViewById(R.id.gridView);
-        for(String url : urls){
-            new Downloader().execute(url);
-        }
+        images = new ArrayList<String>();
 
-        gridview.setAdapter(new ImageAdapter());
 
+        images = getIntent().getStringArrayListExtra("images");
+
+        gridview.setAdapter(new GridAdapter(this.getApplicationContext(),images));
+        Log.i("gallery", "entra gallery");
 
     }
 
@@ -90,12 +79,17 @@ public class image_gallery extends ActionBarActivity {
     }
 
 
+
     /**
      * This class loads the image gallery in grid view.
      *
      */
     public class ImageAdapter extends BaseAdapter {
 
+        private ArrayList<String> images;
+        public ImageAdapter(ArrayList<String> result){
+            images=result;
+        }
 
         @Override
         public int getCount() {
@@ -114,75 +108,35 @@ public class image_gallery extends ActionBarActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.image_layout, null);
+            View element = convertView;
+            ImageView imageView;
 
-            try {
+            if (element == null) {
+                LayoutInflater inflater = ((Activity) getApplicationContext()).getLayoutInflater();
+                element = inflater.inflate(R.layout.image_layout, null);
 
-                ImageView imageView = (ImageView) v.findViewById(R.id.imageViewItem);
+                imageView = (ImageView) element.findViewById(R.id.imageViewItem);
+                //vista.textView_title.setBackgroundResource(R.drawable.flower);
 
-                    Picasso.with(getApplicationContext()).load(images.get(position)).into(imageView);
 
-
-            } catch (Exception e) {
-
+                element.setTag(imageView);
+            } else {
+                imageView = (ImageView) element.getTag();
             }
-            return v;
+
+
+
+            imageView.setImageResource(R.drawable.flower);
+
+
+
+
+            return element;
         }
 
 
     }
 
 
-    private class Downloader extends AsyncTask<String, Void, Void> {
 
-        private ArrayList<String> list;
-
-        @Override
-        protected Void doInBackground(String... params) {
-            ArrayList<String> result = getImageUrls(params[0]);
-            list = result;
-            images.addAll(list);
-            return null;
-        }
-
-
-
-        protected ArrayList<String> OnPostExecute(String... params) {
-
-            //images.addAll(list);
-            return null;
-        }
-
-
-
-
-
-
-
-
-        /**
-         * get all the images in the given url
-         * @param url
-         */
-        public ArrayList<String>getImageUrls(String url){
-            ArrayList<String> list = new ArrayList<String>();
-
-
-            String patternString = "<img src=\"(.*?)\"";
-            Pattern pattern = Pattern.compile(patternString);
-            Matcher matcher;
-            matcher = pattern.matcher(url);
-
-            while (matcher.find()) {
-                String result = matcher.group();
-                list.add(result.substring(result.indexOf("http"), result.lastIndexOf("\"")));
-            }
-            return list;
-        }
-
-
-
-    }
 }

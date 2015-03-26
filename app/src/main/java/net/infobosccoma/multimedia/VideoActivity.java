@@ -14,6 +14,7 @@ public class VideoActivity extends ActionBarActivity {
     private int pos;
     private String path;
     private MediaController controller;
+    private final String ROAR_PATH="http://www.funmaza.eu/videos/2014/Katy%20Perry%201080p%20-%20Roar%20[Funmaza.com].mp4";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
