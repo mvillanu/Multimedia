@@ -1,8 +1,11 @@
 package net.infobosccoma.multimedia;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,15 +19,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import net.infobosccoma.multimedia.Model.User;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     static final String AUDIO_PATH="http://www.susanpiver.com/audio/Dancing in the Dark.mp3";
     private MediaPlayer player;
@@ -34,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
     private EditText textName;
     private EditText textSurname;
     private static final int CAMERA_CODE=100;
+    String mCurrentPhotoPath;
     User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +81,8 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getFile(getBaseContext())) );
-                startActivityForResult(cameraIntent,CAMERA_CODE);
+
+                dispatchTakePictureIntent();
             }
         });
 
@@ -81,7 +93,33 @@ public class MainActivity extends ActionBarActivity {
 
 
 
+    private void createVideo(VideoView video, String path){
+        MediaController controller = new MediaController(this);
+        video.setMediaController(controller);
+        video.setVideoPath(path);
+        video.start();
+        video.requestFocus();
 
+
+    }
+
+
+    private void ResumeMedia(VideoView video, int pos){
+        if(!video.isPlaying()){
+            video.seekTo(pos);
+            video.start();
+        }
+
+    }
+
+
+    private void PauseMedia(VideoView video){
+        if(video.isPlaying()){
+            //pos = video.getCurrentPosition();
+            video.pause();
+        }
+
+    }
 
 
 
@@ -128,29 +166,69 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+/*
+        Intent i = new Intent(getApplicationContext(),DrawerMenuActivity.class);
 
+        Bitmap bitmap = null;
+        InputStream stream = null;
+
+        if (requestCode == CAMERA_CODE && resultCode == Activity.RESULT_OK)
+            try {
+                // recyle unused bitmaps
+                if (bitmap != null) {
+                    bitmap.recycle();
+                }
+                stream = getContentResolver().openInputStream(data.getData());
+                bitmap = BitmapFactory.decodeStream(stream);
+
+                //imageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+            if (stream != null)
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+
+        Uri uri = null;
         if(requestCode==CAMERA_CODE)
         {
             user = null;
-            try {
-                captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
-                user = new User(textName.getText().toString(),textSurname.getText().toString()/*,captureBmp*/);
-                Log.i("user:",user.getName());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
+            uri = Uri.fromFile(getFile(getBaseContext()));
+            user = new User(textName.getText().toString(),textSurname.getText().toString()/*,captureBmp);
+            Log.i("user:",user.getName());
 
             //Intent intent = new Intent(getApplicationContext(),katy_activity.class);
             //intent.putExtra("user",user);
             //startActivity(intent);
 
-            Intent i = new Intent(getApplicationContext(),DrawerMenuActivity.class);
             //Bundle b = user.makeBundle("user");
             i.putExtra("user",user);
+            //i.putExtra("image",makeByteArray(captureBmp));
             //i.putExtra("user",b);
             startActivity(i);
-        }
+        }*/
+
+        Intent i = new Intent(this, DrawerMenuActivity.class);
+        User user = new User(textName.getText().toString(),textSurname.getText().toString(),mCurrentPhotoPath);
+        i.putExtra("user",user);
+        Log.d("Photo path: ",mCurrentPhotoPath);
+        startActivity(i);
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -175,4 +253,61 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    public byte[] makeByteArray(Bitmap bitmap){
+
+        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+        byte[] byteArray = bStream.toByteArray();
+
+        return byteArray;
+        /*Intent anotherIntent = new Intent(this, anotherActivity.class);
+        anotherIntent.putExtra("image", byteArray);
+        startActivity(anotherIntent);
+        finish();*/
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Crea un fitxer d'imatge
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath(); //"file:" +
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, CAMERA_CODE);
+            }
+        }
+    }
+
+
+
+
 }

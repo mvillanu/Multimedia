@@ -1,5 +1,7 @@
 package net.infobosccoma.multimedia;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -67,6 +69,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private LinearLayout llDrawer;
     private User info;
+    private Context context;
 
 
     public NavigationDrawerFragment() {
@@ -80,7 +83,6 @@ public class NavigationDrawerFragment extends Fragment {
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
@@ -267,7 +269,9 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+            Intent audioRecordIntent = new Intent(this.getActivity(),AudioRecordActivity.class);
+
+            startActivity(audioRecordIntent);
             return true;
         }
 

@@ -3,8 +3,10 @@ package net.infobosccoma.multimedia.Model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -14,12 +16,12 @@ public class User implements Serializable{
 
     private String name;
     private String surName;
-    private byte[] byteImage;
+    private String imagePath;
 
-    public User(String name, String surName/*, Bitmap image*/){
+    public User(String name, String surName, String imagePath){
         this.name=name;
         this.surName=surName;
-        //this.byteImage = makeByteArray(image);
+        this.imagePath = imagePath;
     }
 
     public String getName() {
@@ -44,22 +46,20 @@ public class User implements Serializable{
         return b;
     }
 
-    public Bitmap makeBitMap(byte[] arrayBytes){
+    public Bitmap makeBitmap(){
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(arrayBytes,0,arrayBytes.length);
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath,bmOptions);
+
         return bitmap;
-
     }
 
-    public byte[] makeByteArray(Bitmap image){
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        return byteArray;
-
+    public String getImagePath() {
+        return imagePath;
     }
 
-
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

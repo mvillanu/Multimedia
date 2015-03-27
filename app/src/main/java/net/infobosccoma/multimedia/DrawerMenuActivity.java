@@ -2,6 +2,8 @@ package net.infobosccoma.multimedia;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -54,11 +57,15 @@ public class DrawerMenuActivity extends ActionBarActivity
 
         //Bundle bnd = this.getIntent().getSerializableExtra("");
         User info = (User) this.getIntent().getSerializableExtra("user");//bnd.getSerializable("user");
-        Log.i("User info", info.getName());
+        //Log.i("User info", info.getName());
 
 
         EditText nomEditText = (EditText) findViewById(R.id.editText_NomUser);
         EditText cognomEditText = (EditText) findViewById(R.id.editText2_CognomUser);
+        ImageView iv = (ImageView) findViewById(R.id.imageView_FotoUsuari);
+        Bitmap prev = info.makeBitmap();
+        Bitmap bitmap = Bitmap.createScaledBitmap(prev,iv.getWidth(),iv.getHeight(),true);
+        iv.setImageBitmap(bitmap);
 
         nomEditText.setText(info.getName());
         cognomEditText.setText(info.getSurName());
@@ -109,12 +116,13 @@ public class DrawerMenuActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Log.d("Missatge:","Gravador de so");
+
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent audioRecordIntent = new Intent(getBaseContext(),AudioRecordActivity.class);
 
-            startActivity(audioRecordIntent);
-
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -188,6 +196,14 @@ public class DrawerMenuActivity extends ActionBarActivity
             ((DrawerMenuActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    private Bitmap makeBitmap(byte[] byteArray){
+
+        Bitmap bmp = null;
+        bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+        return bmp;
     }
 
 }
