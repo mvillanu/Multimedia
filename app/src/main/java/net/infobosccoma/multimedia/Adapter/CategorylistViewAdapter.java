@@ -31,6 +31,7 @@ public class CategorylistViewAdapter extends ArrayAdapter<Category> {
 
             vista = new Vista();
             vista.textView_title = (TextView) element.findViewById(R.id.textView_title);
+            //vista.textView_title.setBackgroundResource(R.drawable.flower);
 
             vista.textView_title.setText(dades[position].getName());
 

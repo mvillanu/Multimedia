@@ -64,7 +64,9 @@ public class MainActivity extends ActionBarActivity{
 
 
 
+
     private void prepareEditText(){
+
         textName.setOnEditorActionListener(new EditText.OnEditorActionListener(){
 
             @Override
