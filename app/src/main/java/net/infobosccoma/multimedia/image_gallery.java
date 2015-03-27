@@ -15,7 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import net.infobosccoma.multimedia.Adapter.GridAdapter;
+//import net.infobosccoma.multimedia.Adapter.GridAdapter;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,7 @@ public class image_gallery extends ActionBarActivity {
 
         images = getIntent().getStringArrayListExtra("images");
 
-        gridview.setAdapter(new GridAdapter(this.getApplicationContext(),images));
+        //gridview.setAdapter(new GridAdapter(this.getApplicationContext(),images));
         Log.i("gallery", "entra gallery");
 
     }

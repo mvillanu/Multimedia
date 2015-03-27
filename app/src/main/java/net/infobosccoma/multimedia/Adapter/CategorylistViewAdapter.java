@@ -23,30 +23,20 @@ public class CategorylistViewAdapter extends ArrayAdapter<Category> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View element = convertView;
-        Vista vista;
 
         if (element == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             element = inflater.inflate(R.layout.sections_layout, null);
 
-            vista = new Vista();
-            vista.textView_title = (TextView) element.findViewById(R.id.textView_title);
-            //vista.textView_title.setBackgroundResource(R.drawable.flower);
+            TextView textView_title = (TextView) element.findViewById(R.id.textView_title);
+            //textView_title.setBackgroundResource(R.drawable.flower);
 
-            vista.textView_title.setText(dades[position].getName());
+            //textView_title.setText(dades[position].getName());
 
-            element.setTag(vista);
-        } else {
-            vista = (Vista) element.getTag();
         }
 
         return element;
     }
 
-
-    private class Vista {
-
-        public TextView textView_title;
-    }
 
 }
