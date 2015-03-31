@@ -3,18 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="net.infobosccoma.multimedia.NavigationDrawerFragment" >
+    tools:context="net.infobosccoma.multimedia.NavigationDrawerFragment"
+    android:textAlignment="center">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:textAlignment="center">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imageView_FotoUsuari"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textAlignment="center" />
 
         <EditText
             android:layout_width="match_parent"
@@ -23,7 +26,9 @@
             android:text="Name"
             android:ems="10"
             android:id="@+id/editText_NomUser"
-            android:layout_weight="2" />
+            android:layout_weight="2"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light" />
 
         <EditText
             android:layout_width="match_parent"
@@ -32,6 +37,8 @@
             android:text="Name"
             android:ems="10"
             android:id="@+id/editText2_CognomUser"
-            android:layout_weight="2" />
+            android:layout_weight="2"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light" />
     </LinearLayout>
 </LinearLayout>

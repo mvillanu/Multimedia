@@ -23,7 +23,7 @@ public class VideoActivity extends ActionBarActivity {
         video = (VideoView)findViewById(R.id.videoView);
 
         path = getIntent().getStringExtra("path");
-        createVideo(path);
+        createVideo("http://www.ebookfrenzy.com/android_book/movie.mp4");
 
     }
 
@@ -33,6 +33,7 @@ public class VideoActivity extends ActionBarActivity {
          controller = new MediaController(this);
         video.setMediaController(controller);
         video.setVideoPath(path);
+
         video.start();
         video.requestFocus();
 

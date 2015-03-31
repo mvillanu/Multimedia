@@ -1,4 +1,4 @@
-package net.infobosccoma.multimedia;
+package net.infobosccoma.multimedia.Model;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -73,13 +73,6 @@ public class Images{
 
 
 
-        protected ArrayList<String> OnPostExecute(String... params) {
-
-            //images.addAll(list);
-            return null;
-        }
-
-
         /**
          * get all the images in the given url
          * @param content
@@ -118,6 +111,10 @@ public class Images{
 
     }
 
+    /**
+     * returns a list of images in url
+     * @return
+     */
     public ArrayList<String> getList(){
         return this.images;
     }

@@ -1,12 +1,7 @@
 package net.infobosccoma.multimedia.Model;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -17,11 +12,19 @@ public class User implements Serializable{
     private String name;
     private String surName;
     private String imagePath;
+    private byte[] imageBytes;
 
     public User(String name, String surName, String imagePath){
         this.name=name;
         this.surName=surName;
         this.imagePath = imagePath;
+    }
+
+
+
+    public User(String name, String surName){
+        this.name=name;
+        this.surName=surName;
     }
 
     public String getName() {
@@ -44,15 +47,6 @@ public class User implements Serializable{
         Bundle b = new Bundle();
         b.putSerializable(key,this);
         return b;
-    }
-
-    public Bitmap makeBitmap(){
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath,bmOptions);
-
-        return bitmap;
     }
 
     public String getImagePath() {

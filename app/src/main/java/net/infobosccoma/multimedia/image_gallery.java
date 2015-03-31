@@ -4,20 +4,20 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-//import net.infobosccoma.multimedia.Adapter.GridAdapter;
+import net.infobosccoma.multimedia.Adapter.GridAdapter;
 
 import java.util.ArrayList;
+
+//import net.infobosccoma.multimedia.Adapter.GridAdapter;
 
 
 public class image_gallery extends ActionBarActivity {
@@ -31,25 +31,10 @@ public class image_gallery extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_gallery);
 
-
         gridview = (GridView) findViewById(R.id.gridView);
         images = new ArrayList<String>();
-
-
         images = getIntent().getStringArrayListExtra("images");
-
-        //gridview.setAdapter(new GridAdapter(this.getApplicationContext(),images));
-        Log.i("gallery", "entra gallery");
-
-    }
-
-    private void waitDialog(){
-
-
-            myProgressDialog = new ProgressDialog(image_gallery.this);
-            myProgressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myProgressDialog.setMessage(getResources().getString(R.string.loading));
-            myProgressDialog.show();
+        gridview.setAdapter(new GridAdapter(this.getApplicationContext(),images));
     }
 
 
@@ -93,7 +78,7 @@ public class image_gallery extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 0;
+            return images.size();
         }
 
         @Override
@@ -116,7 +101,6 @@ public class image_gallery extends ActionBarActivity {
                 element = inflater.inflate(R.layout.image_layout, null);
 
                 imageView = (ImageView) element.findViewById(R.id.imageViewItem);
-                //vista.textView_title.setBackgroundResource(R.drawable.flower);
 
 
                 element.setTag(imageView);

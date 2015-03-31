@@ -36,10 +36,7 @@
             android:name=".VideoActivity"
             android:label="@string/title_activity_video" >
         </activity>
-        <activity
-            android:name=".video_activity"
-            android:label="@string/title_activity_video_activity" >
-        </activity>
+
         <activity
             android:name=".AudioRecordActivity"
             android:label="@string/title_activity_audio_record" >
