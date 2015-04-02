@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -66,12 +65,12 @@ public class DrawerMenuActivity extends ActionBarActivity
         images = new Images();
         images.download();
 
-
+    /*
         webview = (WebView) findViewById(R.id.webView);
         webview.loadUrl("http://www.katyperry.com/");
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
-
+    */
     }
 
     @Override
