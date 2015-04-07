@@ -1,5 +1,7 @@
 package net.infobosccoma.multimedia.Model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import java.io.Serializable;
@@ -56,4 +58,12 @@ public class User implements Serializable{
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
+    public Bitmap makeBitmap(){
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+        return bitmap;
+
+    }
+
 }
