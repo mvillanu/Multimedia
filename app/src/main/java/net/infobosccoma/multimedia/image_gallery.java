@@ -2,6 +2,11 @@ package net.infobosccoma.multimedia;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,12 +16,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 //import net.infobosccoma.multimedia.Adapter.GridAdapter;
 
+import net.infobosccoma.multimedia.Adapter.MyImageAdapter;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -24,36 +40,43 @@ public class image_gallery extends ActionBarActivity {
 
     private ProgressDialog myProgressDialog;
     private GridView gridview;
-    private ArrayList<String> images;
+    private String[] images;
+    private static Bitmap image;
+
+    private String[] mThumbIds = {
+            "http://cp91279.biography.com/1000509261001/1000509261001_2051017820001_Bio-Biography-Katy-Perry-SF.jpg",
+            "http://www.z90.com/wp-content/uploads/2015/03/Katy-Perry-Widescreen-Wallpaper.jpg",
+            "http://fmdos.cl/wp-content/uploads/2014/10/KATY-PERRY-SUPER-BOWL-2015-2.jpg",
+            "http://img02.lavanguardia.com/2014/06/04/Katy-Perry-durante-uno-de-los-_54408672233_54028874188_960_639.jpg"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_gallery);
 
+        Context c = this.getApplicationContext();
 
-        gridview = (GridView) findViewById(R.id.gridView);
-        images = new ArrayList<String>();
+        GridView gridview = (GridView) findViewById(R.id.gridview);
 
+        //ArrayList<String> aux = getIntent().getStringArrayListExtra("images");
+        //images = aux.toArray(new String[aux.size()]);
+        MyImageAdapter iap = new MyImageAdapter(this);
 
-        images = getIntent().getStringArrayListExtra("images");
+        gridview.setAdapter(iap);
 
-        //gridview.setAdapter(new GridAdapter(this.getApplicationContext(),images));
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Intent i = new Intent(getApplicationContext(),ImageDetailActivity.class);
+                //i.putExtra("url",mThumbIds[position]);
+                //startActivity(i);
+            }
+        });
+
         Log.i("gallery", "entra gallery");
 
     }
-
-    private void waitDialog(){
-
-
-            myProgressDialog = new ProgressDialog(image_gallery.this);
-            myProgressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myProgressDialog.setMessage(getResources().getString(R.string.loading));
-            myProgressDialog.show();
-    }
-
-
-
 
 
     @Override
@@ -78,65 +101,79 @@ public class image_gallery extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private class ImageDownloader extends AsyncTask<String,Void,Bitmap> {
 
-
-    /**
-     * This class loads the image gallery in grid view.
-     *
-     */
-    public class ImageAdapter extends BaseAdapter {
-
-        private ArrayList<String> images;
-        public ImageAdapter(ArrayList<String> result){
-            images=result;
+        @Override
+        protected Bitmap doInBackground(String... param) {
+            // TODO Auto-generated method stub
+            return downloadBitmap(param[0]);
         }
 
         @Override
-        public int getCount() {
-            return 0;
+        protected void onPreExecute() {
+            Log.i("Async-Example", "onPreExecute Called");
+            /*simpleWaitDialog = ProgressDialog.show(ImageDownladerActivity.this,
+                    "Wait", "Downloading Image");*/
+
         }
 
         @Override
-        public Object getItem(int position) {
-            return null;
+        protected void onPostExecute(Bitmap result) {
+            Log.i("Async-Example", "onPostExecute Called");
+            image = result;
+            /*downloadedImg.setImageBitmap(result);
+            simpleWaitDialog.dismiss();*/
+
         }
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+        private Bitmap downloadBitmap(String url) {
+            // initilize the default HTTP client object
+            final DefaultHttpClient client = new DefaultHttpClient();
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View element = convertView;
-            ImageView imageView;
+            //forming a HttoGet request
+            final HttpGet getRequest = new HttpGet(url);
+            try {
 
-            if (element == null) {
-                LayoutInflater inflater = ((Activity) getApplicationContext()).getLayoutInflater();
-                element = inflater.inflate(R.layout.image_layout, null);
+                HttpResponse response = client.execute(getRequest);
 
-                imageView = (ImageView) element.findViewById(R.id.imageViewItem);
-                //vista.textView_title.setBackgroundResource(R.drawable.flower);
+                //check 200 OK for success
+                final int statusCode = response.getStatusLine().getStatusCode();
 
+                if (statusCode != HttpStatus.SC_OK) {
+                    Log.w("ImageDownloader", "Error " + statusCode +
+                            " while retrieving bitmap from " + url);
+                    return null;
 
-                element.setTag(imageView);
-            } else {
-                imageView = (ImageView) element.getTag();
+                }
+
+                final HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    InputStream inputStream = null;
+                    try {
+                        // getting contents from the stream
+                        inputStream = entity.getContent();
+
+                        // decoding stream data back into image Bitmap that android understands
+                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                        return bitmap;
+                    } finally {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                        entity.consumeContent();
+                    }
+                }
+            } catch (Exception e) {
+                // You Could provide a more explicit error message for IOException
+                getRequest.abort();
+                Log.e("ImageDownloader", "Something went wrong while" +
+                        " retrieving bitmap from " + url + e.toString());
             }
 
-
-
-            imageView.setImageResource(R.drawable.flower);
-
-
-
-
-            return element;
+            return null;
         }
-
-
     }
-
 
 
 }

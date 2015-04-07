@@ -12,18 +12,17 @@ public class VideoActivity extends ActionBarActivity {
 
     private VideoView video;
     private int pos;
-    private String path;
+    //private String path;
     private MediaController controller;
-    private final String ROAR_PATH="http://www.funmaza.eu/videos/2014/Katy%20Perry%201080p%20-%20Roar%20[Funmaza.com].mp4";
+    private String ROAR_PATH="http://file1.video9.in/english/album/2013/prism/Roar%20-%20%5B640x360%5D%20%5BWebmusic.IN%5D.mp4";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_activity);
 
         video = (VideoView)findViewById(R.id.videoView);
-
-        path = getIntent().getStringExtra("path");
-        createVideo(path);
+        //path = getIntent().getStringExtra("path");
+        createVideo(ROAR_PATH);
 
     }
 

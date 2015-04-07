@@ -1,6 +1,8 @@
 package net.infobosccoma.multimedia;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import java.io.IOException;
 
 
 public class AudioRecordActivity extends ActionBarActivity {
-
 
     private static final String LOG_TAG = "AudioRecordLog";
     private static String mFileName = null;
@@ -96,9 +97,11 @@ public class AudioRecordActivity extends ActionBarActivity {
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
-                    setText("Stop recording");
+                    mRecordButton.setBackgroundColor(Color.RED);
+                    setText("Para de gravar");
                 } else {
-                    setText("Start recording");
+                    mRecordButton.setBackgroundColor(Color.BLUE);
+                    setText("Comença a gravar");
                 }
                 mStartRecording = !mStartRecording;
             }
@@ -106,7 +109,7 @@ public class AudioRecordActivity extends ActionBarActivity {
 
         public RecordButton(Context ctx) {
             super(ctx);
-            setText("Start recording");
+            setText("Comença a gravar");
             setOnClickListener(clicker);
         }
     }
@@ -118,9 +121,11 @@ public class AudioRecordActivity extends ActionBarActivity {
             public void onClick(View v) {
                 onPlay(mStartPlaying);
                 if (mStartPlaying) {
-                    setText("Stop playing");
+                    mPlayButton.setBackgroundColor(Color.RED);
+                    setText("Pausa");
                 } else {
-                    setText("Start playing");
+                    mPlayButton.setBackgroundColor(Color.GREEN);
+                    setText("Reprodueix la gravació");
                 }
                 mStartPlaying = !mStartPlaying;
             }
@@ -128,7 +133,7 @@ public class AudioRecordActivity extends ActionBarActivity {
 
         public PlayButton(Context ctx) {
             super(ctx);
-            setText("Start playing");
+            setText("Reprodueix la gravació");
             setOnClickListener(clicker);
         }
     }
@@ -145,7 +150,7 @@ public class AudioRecordActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         LinearLayout ll = new LinearLayout(this);
         mRecordButton = new RecordButton(this);
         ll.addView(mRecordButton,
@@ -159,6 +164,9 @@ public class AudioRecordActivity extends ActionBarActivity {
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         0));
+        ll.setBackgroundResource(R.drawable.tumbler);
+        mRecordButton.setBackgroundColor(Color.BLUE);
+        mPlayButton.setBackgroundColor(Color.GREEN);
         setContentView(ll);
     }
 

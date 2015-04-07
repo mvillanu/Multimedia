@@ -7,4 +7,14 @@
     tools:context="net.infobosccoma.multimedia.AudioRecordActivity"
     android:background="@drawable/tumbler">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Grava el teu comentari aquí !"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffffff"
+        android:background="#ff000000" />
 </RelativeLayout>

@@ -2,6 +2,7 @@ package net.infobosccoma.multimedia;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -40,13 +41,11 @@ public class DrawerMenuActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private static Images images;
-    private WebView webview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_menu);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -56,8 +55,6 @@ public class DrawerMenuActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-
-        //Bundle bnd = this.getIntent().getSerializableExtra("");
         User info = (User) this.getIntent().getSerializableExtra("user");//bnd.getSerializable("user");
         //Log.i("User info", info.getName());
 
@@ -67,30 +64,10 @@ public class DrawerMenuActivity extends ActionBarActivity
         ImageView iv = (ImageView) findViewById(R.id.imageView_FotoUsuari);
         Bitmap prev = info.makeBitmap();
 
-        //Bitmap bitmap = Bitmap.createScaledBitmap(prev,iv.getWidth(),iv.getHeight(),true);
         iv.setImageBitmap(prev);
-
+        iv.setRotation(90);
         nomEditText.setText(info.getName());
         cognomEditText.setText(info.getSurName());
-
-        images = new Images();
-        images.download();
-        /*
-        webview = (WebView) findViewById(R.id.webView);
-        //webview.getSettings().setJavaScriptEnabled(true);
-        //webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        webview.setWebViewClient(new WebViewClient() {
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
-
-
-        webview.loadUrl("http://www.katyperry.com/");
-        */
-
-        //mNavigationDrawerFragment.setArguments(savedInstanceState);
 
     }
 
@@ -134,8 +111,6 @@ public class DrawerMenuActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        Log.d("Missatge:","Gravador de so");
 
 
         //noinspection SimplifiableIfStatement
@@ -182,7 +157,7 @@ public class DrawerMenuActivity extends ActionBarActivity
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_drawer_menu, container, false);
 
-            dades = new Category[3];
+            dades = new Category[2];
             dades[0] = new Category("Imatges",R.drawable.flower);
             dades[1] = new Category("Videos",R.drawable.video_image_section);
 
@@ -197,13 +172,15 @@ public class DrawerMenuActivity extends ActionBarActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                    Intent imageIntent = new Intent(parent.getContext(),image_gallery.class);
-                    imageIntent.putStringArrayListExtra("images",images.getList());
-                    startActivity(imageIntent);
-                    //Intent homo = new Intent(parent.getContext(),image_gallery.class);
+                    if(position == 0){
+                        Intent imageIntent = new Intent(parent.getContext(),image_gallery.class);
+                        startActivity(imageIntent);
+                    } else {
+                        Intent videoIntent = new Intent(parent.getContext(),VideoActivity.class);
+                        startActivity(videoIntent);
+                    }
 
-                    //startActivity(homo);
-                    Toast.makeText(getActivity(),"Aixo es una secció",Toast.LENGTH_LONG);
+
                 }
             });
 
@@ -216,14 +193,6 @@ public class DrawerMenuActivity extends ActionBarActivity
             ((DrawerMenuActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
-    }
-
-    private Bitmap makeBitmap(byte[] byteArray){
-
-        Bitmap bmp = null;
-        bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
-        return bmp;
     }
 
 }

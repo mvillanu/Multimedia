@@ -1,6 +1,7 @@
 package net.infobosccoma.multimedia.Adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,20 +24,28 @@ public class CategorylistViewAdapter extends ArrayAdapter<Category> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View element = convertView;
+        Vista vista;
 
-        if (element == null) {
-            LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
-            element = inflater.inflate(R.layout.sections_layout, null);
+        LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
+        element = inflater.inflate(R.layout.sections_layout, null);
 
-            TextView textView_title = (TextView) element.findViewById(R.id.textView_title);
-            //textView_title.setBackgroundResource(R.drawable.flower);
+        vista = new Vista();
+        vista.titol = (TextView) element.findViewById(R.id.textView_title);
+        //Log.d("valor del titol: ",textView_title.toString());
+        vista.titol.setBackgroundResource(dades[position].getId());
+        vista.titol.setText(dades[position].getName());
 
-            //textView_title.setText(dades[position].getName());
-
-        }
 
         return element;
     }
+
+
+    private class Vista {
+
+        public TextView titol;
+
+    }
+
 
 
 }

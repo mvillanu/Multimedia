@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Multimedia</string>
+    <string name="app_name">Katy Perry Fan</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_katy_activity">katy_activity</string>
@@ -17,10 +17,11 @@
     <string name="events">events</string>
     <string name="title_activity_test_drawer2">TestDrawer2Activity</string>
     <string name="title_activity_drawer_menu">DrawerMenuActivity</string>
-    <string name="title_activity_image_gallery">image_gallery</string>
+    <string name="title_activity_image_gallery">Galeria Imatges</string>
     <string name="loading">loading...</string>
-    <string name="title_activity_video">VideoActivity</string>
+    <string name="title_activity_video">Videoclip: ROAR!</string>
     <string name="title_activity_video_activity">video_activity</string>
-    <string name="title_activity_audio_record">AudioRecordActivity</string>
+    <string name="title_activity_audio_record">Grava un Comentari :D</string>
+    <string name="title_activity_image_detail">ImageDetailActivity</string>
 
 </resources>

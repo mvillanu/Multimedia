@@ -3,6 +3,7 @@ package net.infobosccoma.multimedia;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -52,7 +53,7 @@ public class MainActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         player = new MediaPlayer();
 
         btnAccept = (Button) findViewById(R.id.button_accept);
@@ -60,21 +61,6 @@ public class MainActivity extends ActionBarActivity{
         textSurname = (EditText)findViewById(R.id.editTextSurname);
 
         prepareBtn();
-    }
-
-
-
-
-    private void prepareEditText(){
-
-        textName.setOnEditorActionListener(new EditText.OnEditorActionListener(){
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                return false;
-            }
-        });
     }
 
     private void prepareBtn() {
@@ -92,134 +78,15 @@ public class MainActivity extends ActionBarActivity{
     }
 
 
-
-
-
-    private void createVideo(VideoView video, String path){
-        MediaController controller = new MediaController(this);
-        video.setMediaController(controller);
-        video.setVideoPath(path);
-        video.start();
-        video.requestFocus();
-
-
-    }
-
-
-    private void ResumeMedia(VideoView video, int pos){
-        if(!video.isPlaying()){
-            video.seekTo(pos);
-            video.start();
-        }
-
-    }
-
-
-    private void PauseMedia(VideoView video){
-        if(video.isPlaying()){
-            //pos = video.getCurrentPosition();
-            video.pause();
-        }
-
-    }
-
-
-
-    private void startPlaying(String path) throws IOException {
-       player.setDataSource(path);
-       player.prepare();
-       player.start();
-    }
-
-    private void resume(String path, int position) throws IOException {
-        player.setDataSource(path);
-        player.prepare();
-        player.seekTo(position);
-        player.start();
-    }
-
-
-    private void stopPlaying(){
-        if( player.isPlaying()){
-            player.stop();
-            player.release();
-        }
-    }
-
-    private void pause(){
-        position=player.getCurrentPosition();
-        player.pause();
-    }
-
-
-
-    //create a temporary file in sd card path.
-
-    private File getFile(Context context){
-        final File path = new File( Environment.getExternalStorageDirectory(), context.getPackageName() );
-        if(!path.exists()){
-            path.mkdir();
-        }
-        return new File(path, "selfie.png");
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         // check if the request code is same as what is passed  here it is 2
-/*
-        Intent i = new Intent(getApplicationContext(),DrawerMenuActivity.class);
-
-        Bitmap bitmap = null;
-        InputStream stream = null;
-
-        if (requestCode == CAMERA_CODE && resultCode == Activity.RESULT_OK)
-            try {
-                // recyle unused bitmaps
-                if (bitmap != null) {
-                    bitmap.recycle();
-                }
-                stream = getContentResolver().openInputStream(data.getData());
-                bitmap = BitmapFactory.decodeStream(stream);
-
-                //imageView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-            if (stream != null)
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-
-        Uri uri = null;
-        if(requestCode==CAMERA_CODE)
-        {
-            user = null;
-            //captureBmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(getFile(getBaseContext())));
-            uri = Uri.fromFile(getFile(getBaseContext()));
-            user = new User(textName.getText().toString(),textSurname.getText().toString()/*,captureBmp);
-            Log.i("user:",user.getName());
-
-            //Intent intent = new Intent(getApplicationContext(),katy_activity.class);
-            //intent.putExtra("user",user);
-            //startActivity(intent);
-
-            //Bundle b = user.makeBundle("user");
-            i.putExtra("user",user);
-            //i.putExtra("image",makeByteArray(captureBmp));
-            //i.putExtra("user",b);
-            startActivity(i);
-        }*/
 
         Intent i = new Intent(this, DrawerMenuActivity.class);
         User user = new User(textName.getText().toString(),textSurname.getText().toString(),mCurrentPhotoPath);
         i.putExtra("user",user);
-        Log.d("Photo path: ",mCurrentPhotoPath);
         startActivity(i);
 
 
@@ -254,22 +121,6 @@ public class MainActivity extends ActionBarActivity{
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    public byte[] makeByteArray(Bitmap bitmap){
-
-        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
-        byte[] byteArray = bStream.toByteArray();
-
-        return byteArray;
-        /*Intent anotherIntent = new Intent(this, anotherActivity.class);
-        anotherIntent.putExtra("image", byteArray);
-        startActivity(anotherIntent);
-        finish();*/
-
     }
 
     private File createImageFile() throws IOException {
