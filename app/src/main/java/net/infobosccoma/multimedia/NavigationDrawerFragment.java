@@ -1,33 +1,30 @@
 package net.infobosccoma.multimedia;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v7.app.ActionBarActivity;
-import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import net.infobosccoma.multimedia.Model.User;
 
@@ -70,6 +67,7 @@ public class NavigationDrawerFragment extends Fragment {
     private LinearLayout llDrawer;
     private User info;
     private Context context;
+    private User user;
 
 
     public NavigationDrawerFragment() {
@@ -88,47 +86,56 @@ public class NavigationDrawerFragment extends Fragment {
             mFromSavedInstanceState = true;
         }
 
+        Bundle extras = getActivity().getIntent().getExtras();
+
+        user = (User)extras.getSerializable("user");
+
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
     }
 
+private EditText name, surname;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
+
+        user = (User)getActivity().getIntent().getExtras().getSerializable("user");
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       /* mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);*/
 
-        llDrawer = (LinearLayout) inflater.inflate(R.layout.fragment_navigation_drawer,container, false);
+        View rootView = inflater.inflate(R.layout.fragment_navigation_drawer,container, false);
+
+        EditText name = (EditText) rootView.findViewById(R.id.editText_NomUser);
+        EditText surname = (EditText)rootView.findViewById(R.id.editText2_CognomUser);
+        ImageView iv = (ImageView) rootView.findViewById(R.id.imageView_FotoUsuari);
+
+        if(user!=null){
+            name.setText(user.getName());
+            surname.setText(user.getSurName());
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+            Bitmap bitmap = BitmapFactory.decodeFile(user.getImagePath(),bmOptions);
+
+            bitmap = Bitmap.createScaledBitmap(bitmap,50,50,true);
+
+            iv.setImageBitmap(bitmap);
+        }
+        else{
+            name.setText("error");
+            surname.setText("error");
+        }
 
 
+        return rootView;
 
 
-
-       /* mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });*/
-       /* mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;*/
-        return llDrawer;
     }
 
     public boolean isDrawerOpen() {
@@ -190,6 +197,7 @@ public class NavigationDrawerFragment extends Fragment {
 
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
+
         };
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
