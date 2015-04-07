@@ -28,7 +28,10 @@ import net.infobosccoma.multimedia.Adapter.CategorylistViewAdapter;
 import net.infobosccoma.multimedia.Model.Category;
 import net.infobosccoma.multimedia.Model.User;
 
-
+/*
+*
+* Menu Activity
+* */
 public class DrawerMenuActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
