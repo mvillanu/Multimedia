@@ -62,7 +62,7 @@ public class DrawerMenuActivity extends ActionBarActivity
         EditText nomEditText = (EditText) findViewById(R.id.editText_NomUser);
         EditText cognomEditText = (EditText) findViewById(R.id.editText2_CognomUser);
         ImageView iv = (ImageView) findViewById(R.id.imageView_FotoUsuari);
-        Bitmap prev = info.makeBitmap();
+        Bitmap prev = BitmapFactory.decodeFile(info.getImagePath());
 
         iv.setImageBitmap(prev);
         iv.setRotation(90);
